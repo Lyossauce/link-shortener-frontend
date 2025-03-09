@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { shortenLink } from "../services/LinkShortenerService";
 
 export default function ShortenerForm() {
   const [url, setUrl] = useState('');
@@ -8,15 +9,8 @@ export default function ShortenerForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const response = await fetch('http://localhost:3000/local/links', {
-     method: 'POST',
-     headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url }),
-    });
-    const data = await response.json();
-    setShortUrl(data.url);
+    const shortenedUrl = await shortenLink(url);
+    setShortUrl(shortenedUrl);
     setLoading(false);
   };
 
